@@ -1,0 +1,840 @@
+[{
+  "_id": {
+    "$oid": "69d30eb16b2a02a2c818eccc"
+  },
+  "title": "Eye checkup",
+  "date": {
+    "$date": "2026-04-05T00:00:00.000Z"
+  },
+  "category": "Health",
+  "description": "Eye test at OPSM",
+  "paymentMethod": "Digital Wallet",
+  "amount": 65,
+  "createdAt": {
+    "$date": "2026-04-06T01:38:57.836Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T01:38:57.836Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d30f5c6b2a02a2c818eccd"
+  },
+  "title": "Grocery shopping",
+  "date": {
+    "$date": "2026-04-01T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Meal prep",
+  "paymentMethod": "Cash",
+  "amount": 40.8,
+  "createdAt": {
+    "$date": "2026-04-06T01:41:48.196Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T01:41:48.196Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d3440b20b8a81882377ca2"
+  },
+  "title": "Uber",
+  "date": {
+    "$date": "2026-04-02T00:00:00.000Z"
+  },
+  "category": "Transport",
+  "description": "Concert",
+  "paymentMethod": "Cash",
+  "amount": 88,
+  "createdAt": {
+    "$date": "2026-04-06T05:26:35.216Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T13:42:17.563Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d3443920b8a81882377ca3"
+  },
+  "title": "Netflix",
+  "date": {
+    "$date": "2026-04-01T00:00:00.000Z"
+  },
+  "category": "Entertainment",
+  "description": "Monthly bill",
+  "paymentMethod": "Debit Card",
+  "amount": 45,
+  "createdAt": {
+    "$date": "2026-04-06T05:27:21.734Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T05:27:21.734Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d5c26def149d758dff013a"
+  },
+  "title": "Yarn",
+  "date": {
+    "$date": "2026-04-08T00:00:00.000Z"
+  },
+  "category": "Shopping",
+  "description": "Crocheting supplies for April",
+  "paymentMethod": "Digital Wallet",
+  "amount": 78,
+  "createdAt": {
+    "$date": "2026-04-08T02:50:21.966Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-08T08:58:01.790Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d5d0c70fb869f3c4ef4016"
+  },
+  "title": "Opal top up",
+  "date": {
+    "$date": "2025-11-05T00:00:00.000Z"
+  },
+  "category": "Transport",
+  "description": "Train and bus travel",
+  "paymentMethod": "Digital Wallet",
+  "amount": 30
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef401a"
+  },
+  "title": "Coffee and snack",
+  "date": {
+    "$date": "2025-11-08T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Cafe stop after class",
+  "paymentMethod": "Debit Card",
+  "amount": 12.8
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef401b"
+  },
+  "title": "Phone bill",
+  "date": {
+    "$date": "2025-11-11T00:00:00.000Z"
+  },
+  "category": "Bills",
+  "description": "Monthly mobile plan",
+  "paymentMethod": "Debit Card",
+  "amount": 35
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef401c"
+  },
+  "title": "Movie night",
+  "date": {
+    "$date": "2025-11-15T00:00:00.000Z"
+  },
+  "category": "Entertainment",
+  "description": "Cinema ticket",
+  "paymentMethod": "Credit Card",
+  "amount": 19
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef401d"
+  },
+  "title": "Pharmacy essentials",
+  "date": {
+    "$date": "2025-11-18T00:00:00.000Z"
+  },
+  "category": "Health",
+  "description": "Pain relief and personal care items",
+  "paymentMethod": "Debit Card",
+  "amount": 24.6
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef401e"
+  },
+  "title": "Notebook supplies",
+  "date": {
+    "$date": "2025-11-22T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "Stationery restock",
+  "paymentMethod": "Cash",
+  "amount": 16.4
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef401f"
+  },
+  "title": "Top and tote bag",
+  "date": {
+    "$date": "2025-11-27T00:00:00.000Z"
+  },
+  "category": "Shopping",
+  "description": "Small clothing purchase",
+  "paymentMethod": "Credit Card",
+  "amount": 54.9
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4020"
+  },
+  "title": "Groceries",
+  "date": {
+    "$date": "2025-12-02T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Fortnight grocery shop",
+  "paymentMethod": "Debit Card",
+  "amount": 44.2
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4021"
+  },
+  "title": "Opal top up",
+  "date": {
+    "$date": "2025-12-04T00:00:00.000Z"
+  },
+  "category": "Transport",
+  "description": "Train and bus balance",
+  "paymentMethod": "Digital Wallet",
+  "amount": 35
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4022"
+  },
+  "title": "Lunch out",
+  "date": {
+    "$date": "2025-12-07T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Lunch with classmates",
+  "paymentMethod": "Debit Card",
+  "amount": 18.5
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4023"
+  },
+  "title": "Internet share",
+  "date": {
+    "$date": "2025-12-10T00:00:00.000Z"
+  },
+  "category": "Bills",
+  "description": "Shared home internet payment",
+  "paymentMethod": "Bank Transfer",
+  "amount": 27
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4024"
+  },
+  "title": "Streaming subscription",
+  "date": {
+    "$date": "2025-12-12T00:00:00.000Z"
+  },
+  "category": "Entertainment",
+  "description": "Monthly streaming plan",
+  "paymentMethod": "Debit Card",
+  "amount": 14.99
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4025"
+  },
+  "title": "Protein bars",
+  "date": {
+    "$date": "2025-12-15T00:00:00.000Z"
+  },
+  "category": "Health",
+  "description": "Snack stock up",
+  "paymentMethod": "Debit Card",
+  "amount": 11.5
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4026"
+  },
+  "title": "Gift shopping",
+  "date": {
+    "$date": "2025-12-20T00:00:00.000Z"
+  },
+  "category": "Shopping",
+  "description": "Holiday gifts",
+  "paymentMethod": "Credit Card",
+  "amount": 86
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4027"
+  },
+  "title": "Laundry payment",
+  "date": {
+    "$date": "2025-12-23T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "Laundry room payment",
+  "paymentMethod": "Cash",
+  "amount": 10
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4028"
+  },
+  "title": "Groceries",
+  "date": {
+    "$date": "2026-01-03T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Weekly grocery run",
+  "paymentMethod": "Debit Card",
+  "amount": 41.8
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4029"
+  },
+  "title": "Opal top up",
+  "date": {
+    "$date": "2026-01-06T00:00:00.000Z"
+  },
+  "category": "Transport",
+  "description": "Travel balance top up",
+  "paymentMethod": "Digital Wallet",
+  "amount": 30
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef402a"
+  },
+  "title": "Coffee and pastry",
+  "date": {
+    "$date": "2026-01-09T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Cafe break before class",
+  "paymentMethod": "Debit Card",
+  "amount": 13.2
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef402b"
+  },
+  "title": "Electricity share",
+  "date": {
+    "$date": "2026-01-12T00:00:00.000Z"
+  },
+  "category": "Bills",
+  "description": "Household utilities contribution",
+  "paymentMethod": "Bank Transfer",
+  "amount": 32
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef402c"
+  },
+  "title": "Pharmacy run",
+  "date": {
+    "$date": "2026-01-14T00:00:00.000Z"
+  },
+  "category": "Health",
+  "description": "Medicines and essentials",
+  "paymentMethod": "Debit Card",
+  "amount": 18.75
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef402d"
+  },
+  "title": "Sketchbook",
+  "date": {
+    "$date": "2026-01-18T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "Creative supplies",
+  "paymentMethod": "Debit Card",
+  "amount": 21.4
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef402e"
+  },
+  "title": "Dinner with friends",
+  "date": {
+    "$date": "2026-01-22T00:00:00.000Z"
+  },
+  "category": "Entertainment",
+  "description": "Casual dinner outing",
+  "paymentMethod": "Credit Card",
+  "amount": 37.5
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef402f"
+  },
+  "title": "Skincare refill",
+  "date": {
+    "$date": "2026-01-26T00:00:00.000Z"
+  },
+  "category": "Shopping",
+  "description": "Restock of skincare items",
+  "paymentMethod": "Credit Card",
+  "amount": 62.3
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4030"
+  },
+  "title": "Groceries",
+  "date": {
+    "$date": "2026-02-02T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Fortnight grocery shop",
+  "paymentMethod": "Debit Card",
+  "amount": 46.7
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4031"
+  },
+  "title": "Opal top up",
+  "date": {
+    "$date": "2026-02-05T00:00:00.000Z"
+  },
+  "category": "Transport",
+  "description": "Metro and bus travel",
+  "paymentMethod": "Digital Wallet",
+  "amount": 35
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4032"
+  },
+  "title": "Coffee run",
+  "date": {
+    "$date": "2026-02-08T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Coffee before tutorial",
+  "paymentMethod": "Debit Card",
+  "amount": 8.9
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4033"
+  },
+  "title": "Phone bill",
+  "date": {
+    "$date": "2026-02-10T00:00:00.000Z"
+  },
+  "category": "Bills",
+  "description": "Monthly mobile plan",
+  "paymentMethod": "Debit Card",
+  "amount": 35
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4034"
+  },
+  "title": "Gym pass",
+  "date": {
+    "$date": "2026-02-13T00:00:00.000Z"
+  },
+  "category": "Health",
+  "description": "Weekly fitness access",
+  "paymentMethod": "Debit Card",
+  "amount": 22
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4035"
+  },
+  "title": "Movie ticket",
+  "date": {
+    "$date": "2026-02-16T00:00:00.000Z"
+  },
+  "category": "Entertainment",
+  "description": "Weekend movie outing",
+  "paymentMethod": "Credit Card",
+  "amount": 21
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4036"
+  },
+  "title": "Room decor",
+  "date": {
+    "$date": "2026-02-21T00:00:00.000Z"
+  },
+  "category": "Shopping",
+  "description": "Small decor pieces",
+  "paymentMethod": "Credit Card",
+  "amount": 48.5
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4037"
+  },
+  "title": "Printing credits",
+  "date": {
+    "$date": "2026-02-25T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "University printing",
+  "paymentMethod": "Cash",
+  "amount": 9.5
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4038"
+  },
+  "title": "Groceries",
+  "date": {
+    "$date": "2026-03-03T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Weekly groceries",
+  "paymentMethod": "Debit Card",
+  "amount": 43.6
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4039"
+  },
+  "title": "Opal top up",
+  "date": {
+    "$date": "2026-03-05T00:00:00.000Z"
+  },
+  "category": "Transport",
+  "description": "Travel card recharge",
+  "paymentMethod": "Digital Wallet",
+  "amount": 30
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef403a"
+  },
+  "title": "Cafe brunch",
+  "date": {
+    "$date": "2026-03-08T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Weekend brunch",
+  "paymentMethod": "Debit Card",
+  "amount": 24.4
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef403b"
+  },
+  "title": "Internet share",
+  "date": {
+    "$date": "2026-03-10T00:00:00.000Z"
+  },
+  "category": "Bills",
+  "description": "Shared wifi payment",
+  "paymentMethod": "Bank Transfer",
+  "amount": 27
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef403c"
+  },
+  "title": "Pharmacy essentials",
+  "date": {
+    "$date": "2026-03-13T00:00:00.000Z"
+  },
+  "category": "Health",
+  "description": "Medicines and personal care items",
+  "paymentMethod": "Debit Card",
+  "amount": 19.2
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef403d"
+  },
+  "title": "Streaming and music",
+  "date": {
+    "$date": "2026-03-16T00:00:00.000Z"
+  },
+  "category": "Entertainment",
+  "description": "Monthly subscriptions",
+  "paymentMethod": "Debit Card",
+  "amount": 23.49
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef403e"
+  },
+  "title": "Art supplies",
+  "date": {
+    "$date": "2026-03-20T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "Markers and pens",
+  "paymentMethod": "Debit Card",
+  "amount": 17.6
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef403f"
+  },
+  "title": "Cardigan purchase",
+  "date": {
+    "$date": "2026-03-24T00:00:00.000Z"
+  },
+  "category": "Shopping",
+  "description": "Autumn clothing",
+  "paymentMethod": "Credit Card",
+  "amount": 71.9
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4040"
+  },
+  "title": "Groceries",
+  "date": {
+    "$date": "2026-04-02T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Weekly groceries",
+  "paymentMethod": "Debit Card",
+  "amount": 45.2
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4041"
+  },
+  "title": "Opal top up",
+  "date": {
+    "$date": "2026-04-04T00:00:00.000Z"
+  },
+  "category": "Transport",
+  "description": "Travel top up",
+  "paymentMethod": "Digital Wallet",
+  "amount": 30
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4042"
+  },
+  "title": "Streaming subscription",
+  "date": {
+    "$date": "2026-04-07T00:00:00.000Z"
+  },
+  "category": "Entertainment",
+  "description": "Monthly streaming plan",
+  "paymentMethod": "Debit Card",
+  "amount": 14.99,
+  "updatedAt": {
+    "$date": "2026-04-08T08:42:04.467Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4043"
+  },
+  "title": "Skincare refill",
+  "date": {
+    "$date": "2026-04-02T00:00:00.000Z"
+  },
+  "category": "Shopping",
+  "description": "Refill purchase",
+  "paymentMethod": "Credit Card",
+  "amount": 58.4,
+  "updatedAt": {
+    "$date": "2026-04-08T08:50:48.320Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4045"
+  },
+  "title": "Household supplies",
+  "date": {
+    "$date": "2026-04-05T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "Cleaning and daily essentials",
+  "paymentMethod": "Debit Card",
+  "amount": 18.3,
+  "updatedAt": {
+    "$date": "2026-04-08T08:50:31.269Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69d5d5060fb869f3c4ef4046"
+  },
+  "title": "Electricity share",
+  "date": {
+    "$date": "2026-04-03T00:00:00.000Z"
+  },
+  "category": "Bills",
+  "description": "Utility contributio",
+  "paymentMethod": "Bank Transfer",
+  "amount": 31,
+  "updatedAt": {
+    "$date": "2026-04-08T08:29:02.019Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "69d5d5b60fb869f3c4ef4048"
+  },
+  "title": "Winter jacket",
+  "date": {
+    "$date": "2025-12-18T00:00:00.000Z"
+  },
+  "category": "Shopping",
+  "description": "Bought a jacket for cooler weather",
+  "paymentMethod": "Credit Card",
+  "amount": 124
+},
+{
+  "_id": {
+    "$oid": "69d5d5b60fb869f3c4ef4049"
+  },
+  "title": "Dinner out",
+  "date": {
+    "$date": "2025-12-28T00:00:00.000Z"
+  },
+  "category": "Entertainment",
+  "description": "Dinner and dessert with friends",
+  "paymentMethod": "Debit Card",
+  "amount": 46.8
+},
+{
+  "_id": {
+    "$oid": "69d5d5b60fb869f3c4ef404a"
+  },
+  "title": "Doctor appointment",
+  "date": {
+    "$date": "2026-01-20T00:00:00.000Z"
+  },
+  "category": "Health",
+  "description": "General checkup appointment",
+  "paymentMethod": "Debit Card",
+  "amount": 68
+},
+{
+  "_id": {
+    "$oid": "69d5d5b60fb869f3c4ef404b"
+  },
+  "title": "Textbook",
+  "date": {
+    "$date": "2026-01-29T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "Course reading material",
+  "paymentMethod": "Debit Card",
+  "amount": 52.5
+},
+{
+  "_id": {
+    "$oid": "69d5d5b60fb869f3c4ef404c"
+  },
+  "title": "Haircut",
+  "date": {
+    "$date": "2026-02-18T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "Salon visit",
+  "paymentMethod": "Debit Card",
+  "amount": 32
+},
+{
+  "_id": {
+    "$oid": "69d5d5b60fb869f3c4ef404d"
+  },
+  "title": "Uni materials",
+  "date": {
+    "$date": "2026-03-11T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "Printed sheets and class materials",
+  "paymentMethod": "Cash",
+  "amount": 28.4
+},
+{
+  "_id": {
+    "$oid": "69d5d5b60fb869f3c4ef404e"
+  },
+  "title": "Shoes",
+  "date": {
+    "$date": "2026-03-22T00:00:00.000Z"
+  },
+  "category": "Shopping",
+  "description": "Bought everyday sneakers",
+  "paymentMethod": "Credit Card",
+  "amount": 96
+},
+{
+  "_id": {
+    "$oid": "69d5d5b60fb869f3c4ef404f"
+  },
+  "title": "Dinner and movie",
+  "date": {
+    "$date": "2026-03-27T00:00:00.000Z"
+  },
+  "category": "Entertainment",
+  "description": "Weekend outing",
+  "paymentMethod": "Credit Card",
+  "amount": 58.2
+},
+{
+  "_id": {
+    "$oid": "69d60df7623d5369d4d61a65"
+  },
+  "title": "Sushi lunch",
+  "date": {
+    "$date": "2025-11-09T00:00:00.000Z"
+  },
+  "category": "Food",
+  "description": "Lunch between classes",
+  "paymentMethod": "Debit Card",
+  "amount": 21.4
+},
+{
+  "_id": {
+    "$oid": "69d60df7623d5369d4d61a66"
+  },
+  "title": "Bus fare top up",
+  "date": {
+    "$date": "2025-11-14T00:00:00.000Z"
+  },
+  "category": "Transport",
+  "description": "Extra travel for the week",
+  "paymentMethod": "Digital Wallet",
+  "amount": 18
+},
+{
+  "_id": {
+    "$oid": "69d60df7623d5369d4d61a67"
+  },
+  "title": "Laundry detergent",
+  "date": {
+    "$date": "2025-11-25T00:00:00.000Z"
+  },
+  "category": "Other",
+  "description": "Bought household essentials",
+  "paymentMethod": "Debit Card",
+  "amount": 14.2
+}]

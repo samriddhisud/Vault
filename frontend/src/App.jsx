@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { useToast } from './hooks/useToast'
+import { useState } from 'react'
 
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -11,14 +12,13 @@ import Admin from './pages/Admin'
 import Profile from './pages/Profile'
 import Navbar from './components/Navbar'
 import ToastContainer from './components/ToastContainer'
+import SplashScreen from './components/SplashScreen'
 
-// Blocks logged-out users from protected pages
 function ProtectedRoute({ children }) {
   const { user } = useAuth()
   return user ? children : <Navigate to="/login" replace />
 }
 
-// Blocks non-admins from admin page
 function AdminRoute({ children }) {
   const { user } = useAuth()
   if (!user) return <Navigate to="/login" replace />
@@ -60,10 +60,13 @@ function AppLayout() {
 }
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true)
+
   return (
     <AuthProvider>
       <BrowserRouter>
         <div className="rainbow-strip" />
+        {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
         <AppLayout />
       </BrowserRouter>
     </AuthProvider>

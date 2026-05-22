@@ -30,8 +30,11 @@ export default function Reports({ addToast }) {
   const pieRef = useRef(null)
   const barChart = useRef(null)
   const pieChart = useRef(null)
+  const initialized = useRef(false)
 
   useEffect(() => {
+    if (initialized.current) return
+    initialized.current = true
     api.get('/expenses')
       .then(res => { setExpenses(res.data); setLoading(false) })
       .catch(() => { addToast('Could not load expenses.', 'error'); setLoading(false) })
@@ -45,7 +48,7 @@ export default function Reports({ addToast }) {
 
   useEffect(() => {
     if (loading || !barRef.current) return
-    if (barChart.current) barChart.current.destroy()
+    if (barChart.current) { barChart.current.destroy(); barChart.current = null }
 
     const now = new Date()
     const labels = []
@@ -81,16 +84,17 @@ export default function Reports({ addToast }) {
         }
       }
     })
+
+    return () => { if (barChart.current) { barChart.current.destroy(); barChart.current = null } }
   }, [expenses, barRange, loading])
 
   useEffect(() => {
     if (loading || !pieRef.current || !pieMonth) return
-    if (pieChart.current) pieChart.current.destroy()
+    if (pieChart.current) { pieChart.current.destroy(); pieChart.current = null }
 
     const monthExpenses = expenses.filter(e => getMonthKey(e.date) === pieMonth)
     const totals = {}
     monthExpenses.forEach(e => { totals[e.category] = (totals[e.category] || 0) + e.amount })
-
     if (!Object.keys(totals).length) return
 
     const isDark = document.body.classList.contains('dark')
@@ -113,6 +117,8 @@ export default function Reports({ addToast }) {
         }
       }
     })
+
+    return () => { if (pieChart.current) { pieChart.current.destroy(); pieChart.current = null } }
   }, [expenses, pieMonth, loading])
 
   if (loading) return <div className="page-wrapper"><div className="loading-page"><div className="spinner"></div></div></div>
@@ -138,9 +144,7 @@ export default function Reports({ addToast }) {
           </div>
         ) : (
           <>
-            {/* CHARTS ROW */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-              {/* Bar chart */}
               <div className="card-flat">
                 <div className="flex-between mb-12">
                   <span style={{ fontSize: 14, fontWeight: 700 }}>Monthly expenditure</span>
@@ -152,12 +156,9 @@ export default function Reports({ addToast }) {
                     </select>
                   </div>
                 </div>
-                <div style={{ height: 220 }}>
-                  <canvas ref={barRef} />
-                </div>
+                <div style={{ height: 220 }}><canvas ref={barRef} /></div>
               </div>
 
-              {/* Pie chart */}
               <div className="card-flat">
                 <div className="flex-between mb-12">
                   <span style={{ fontSize: 14, fontWeight: 700 }}>Category breakdown</span>
@@ -176,7 +177,6 @@ export default function Reports({ addToast }) {
               </div>
             </div>
 
-            {/* CATEGORY SUMMARY */}
             <div className="section-label">Category breakdown — {pieMonth ? formatMonthKey(pieMonth) : ''}</div>
             {Object.keys(catTotals).length === 0 ? (
               <div className="empty-state"><div className="empty-state-body">No expenses for this month.</div></div>

@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useState, useEffect } from 'react'
+import api from '../api/index'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
@@ -12,7 +13,8 @@ export default function Navbar() {
     localStorage.setItem('vault_theme', dark ? 'dark' : 'light')
   }, [dark])
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try { await api.post('/auth/logout') } catch {}
     logout()
     navigate('/login')
   }

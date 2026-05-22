@@ -104,3 +104,12 @@ router.put('/password', require('../middleware/auth').protect, async (req, res) 
     res.status(500).json({ error: 'Could not update password.' })
   }
 })
+
+router.post('/logout', require('../middleware/auth').protect, async (req, res) => {
+  try {
+    await require('../middleware/logActivity')(req.user._id, 'logout', `${req.user.name} logged out`)
+    res.status(200).json({ message: 'Logged out.' })
+  } catch {
+    res.status(500).json({ error: 'Could not log logout.' })
+  }
+})

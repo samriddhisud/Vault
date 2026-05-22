@@ -1,0 +1,47 @@
+[
+  {
+    "_id": "6a0fcc6bb506f6d8cc408b14",
+    "userId": "6a0fcc6bb506f6d8cc408b13",
+    "action": "register",
+    "detail": "Test User created an account",
+    "createdAt": "2026-05-22T03:24:27.829Z",
+    "updatedAt": "2026-05-22T03:24:27.829Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a0fd0cd0d72b72dd4d32ebc",
+    "userId": "6a0fd0cd0d72b72dd4d32ebb",
+    "action": "register",
+    "detail": "Test User2 created an account",
+    "createdAt": "2026-05-22T03:43:09.404Z",
+    "updatedAt": "2026-05-22T03:43:09.404Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a0fd1180d72b72dd4d32ebe",
+    "userId": "6a0fd0cd0d72b72dd4d32ebb",
+    "action": "add_expense",
+    "detail": "Grocery run",
+    "createdAt": "2026-05-22T03:44:24.566Z",
+    "updatedAt": "2026-05-22T03:44:24.566Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a0fd6c6d59367f8a0ca979f",
+    "userId": "6a0fd0cd0d72b72dd4d32ebb",
+    "action": "update_budget",
+    "detail": "Set to $2000",
+    "createdAt": "2026-05-22T04:08:38.473Z",
+    "updatedAt": "2026-05-22T04:08:38.473Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a0fd7707f619946546fcb8c",
+    "userId": "6a0fd0cd0d72b72dd4d32ebb",
+    "action": "login",
+    "detail": "Test User2 logged in",
+    "createdAt": "2026-05-22T04:11:28.118Z",
+    "updatedAt": "2026-05-22T04:11:28.118Z",
+    "__v": 0
+  }
+]

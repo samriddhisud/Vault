@@ -1,289 +1,145 @@
-# Vault
+# Vault — Expense Tracker
 
-Vault is an individual university project developed for **32516 Internet Programming - Assignment 1 - Dynamic Web Interface to a Database System**. It is a single-page expense tracker that helps users record expenses, manage a monthly budget, monitor category-based spending, and explore monthly spending trends over time through a clean and responsive interface.
+Vault is a full-stack expense tracking web application that helps users manage their spending, monitor budgets, and visualise financial patterns over time.
 
-## Problem the Website Solves
+## Problem it solves
 
-Managing everyday expenses can become difficult when spending records are scattered, uncategorised, or hard to review over time. Vault addresses this by providing a single-page interface where users can add, edit, delete, sort, and filter expenses while also viewing budget usage, category summaries, and monthly spending trends in one place.
+Most people struggle to keep track of their day-to-day spending. Vault provides a clean, intuitive interface to log expenses, set monthly budgets, and see exactly where money is going — with real-time search, category breakdowns, and monthly trend charts.
 
-## Technical Stack
+---
 
-### Frontend
+## Tech Stack
 
-- HTML
-- CSS
-- Vanilla JavaScript
+| Layer | Technology |
+|---|---|
+| Frontend | React 19, Vite, React Router DOM, Axios, Chart.js |
+| Backend | Node.js, Express.js |
+| Database | MongoDB Atlas, Mongoose |
+| Auth | JWT (jsonwebtoken), bcryptjs |
 
-### Backend
+---
 
-- Node.js
-- Express
+## How to run locally
 
-### Database
+### Prerequisites
+- Node.js v18+
+- MongoDB Atlas account (or local MongoDB)
 
-- MongoDB
-- Mongoose
-
-### Development Tools
-
-- dotenv
-- nodemon
-
-## Application Overview
-
-Vault works as a single-page interface. The application updates data dynamically within the same page rather than navigating across multiple HTML pages. It supports all core CRUD operations on the expense database and aims to provide a smooth workflow with minimal interruption while completing common budgeting tasks.
-
-## Features
-
-- Single-page expense tracker interface
-- Save and edit a monthly budget
-- Add expenses
-- Edit existing expenses
-- Delete expenses
-- View expenses in a structured table
-- Filter expenses by:
-  - All
-  - This Week
-  - This Month
-  - Specific Month
-- Sort expenses by:
-  - Newest First
-  - Oldest First
-  - Highest Amount
-  - Lowest Amount
-- View **This Month's Overview** cards for the current month
-- View **Spending by Category** summary cards
-- View **Spending Trends** with:
-  - A bar chart for monthly expenditure trends
-  - A pie chart for category breakdown by selected month
-- Dark mode toggle
-- Intro overlay splash screen
-- Floating calculator panel
-- Custom delete confirmation modal
-- Back-to-top button
-- Responsive layout for desktop, tablet, and mobile
-- Inline validation for required fields
-- Keyboard navigability
-- Favicon using the Vault logo
-- Icon buttons use `aria-label` attributes
-- Logo images include alt text
-
-## Key UI and UX Highlights
-
-- The application behaves like a single-page experience and updates content dynamically
-- **This Month's Overview** specifically reflects the current month
-- The expense table defaults to **This Month** for more relevant day-to-day use
-- A **Specific Month** filter allows historical month-based viewing
-- Historical MongoDB data supports both chart rendering and month dropdowns
-- Future dates are blocked in the expense date picker
-- Expense deletion uses a custom confirmation modal instead of the browser's default confirm dialog
-- The floating calculator panel supports quick calculations while entering expense amounts
-- Dark mode was styled to stay readable and visually consistent without cluttering the interface
-- Vault-branded visual details create a more cohesive interface
-- Intro splash screen adds a polished first-load experience
-- The interface is responsive across desktop, tablet, and mobile screen sizes
-
-## Accessibility
-
-Basic accessibility considerations were included in Vault to improve usability and support clearer interaction:
-
-- Keyboard support was added for important form actions, including saving the monthly budget and adding or updating expenses using the Enter key
-- Icon buttons use `aria-label` attributes so their purpose is clearer for assistive technologies
-- Logo images include alt text
-- Inline validation provides visible feedback when required fields are incomplete or invalid
-- Future dates are restricted in the date input to help prevent invalid entries
-- Dark mode was designed with readability and contrast in mind across major interface elements
-
-## CRUD Operations
-
-Vault includes all required CRUD operations on the database:
-
-### Create
-
-- Add a new expense
-- Create or save a monthly budget
-
-### Read
-
-- Load and display all expenses
-- Load and display the current monthly budget
-- Display overview cards, category summaries, and charts using stored data
-
-### Update
-
-- Edit an existing expense
-- Update the monthly budget
-
-### Delete
-
-- Delete an existing expense
-
-## Backend Routes Summary
-
-### Expense Routes
-
-- `GET /api/expenses` — return all expenses
-- `POST /api/expenses` — create a new expense
-- `PUT /api/expenses/:id` — update an existing expense
-- `DELETE /api/expenses/:id` — delete an expense
-
-### Budget Routes
-
-- `GET /api/budget` — return the current budget
-- `PUT /api/budget` — create or update the current budget
-
-## Validation and Error Handling
-
-### Expense Form Validation
-
-Required fields:
-
-- Title
-- Date
-- Category
-- Amount
-
-Validation rules:
-
-- Amount must be greater than `0`
-- Future dates are not allowed
-- Inline error styling is shown with helper text
-
-### Monthly Budget Validation
-
-- Budget must be greater than `0`
-- Save remains disabled until the value is valid
-- Save and Clear remain disbaled until a value is entered
-
-### Basic Error Handling
-
-- Feedback messages are shown if expense or budget data cannot be loaded
-- Feedback messages are shown if create, update, or delete actions fail
-- The interface does not rely on a blank screen in failure states
-
-## Challenges Overcome
-
-- **Form validation and error handling:** One of the main challenges was building the expense form so it felt clear, polished, and reliable. Getting the validation to work properly across all required fields took a few rounds of testing, as some fields were not showing errors correctly at first. I improved this by reviewing the validation logic field by field, separating the checks more clearly, and making sure the correct error messages and CSS error states were triggered for each input. This made the form more consistent and much easier to use.
-
-- **Designing dark mode for readability:** Dark mode was another challenge because it was not enough to simply invert colours from the light mode version. I had to make sure the interface remained readable, accessible, and visually balanced across cards, forms, tables, charts, and category colours. I explored different palettes, tested multiple combinations, and adjusted colours until the contrast and readability felt right. This helped create a dark mode that was both usable and visually consistent.
-
-- **Improving filtering and sorting for a smoother experience:** Deciding on the filtering system and its layout took careful thought, especially the addition of the **Specific Month** filter. Before this, the interface felt less organised and it was harder to review expenses clearly. Adding structured filters made the data easier to explore and improved the overall flow of the app. The **Sort By** options also strengthened the experience by giving users more control over how they want to view and compare their expense data.
-
-- **Adding a calculator based on usability testing:** During usability testing, I noticed that I was using my phone's calculator before entering an amount in the expense form. That made the process feel interrupted, so I decided to include a floating calculator directly in the interface. It can be opened and closed whenever needed, and the result can be inserted straight into the amount field. This was a small addition, but it made the expense entry flow much smoother and more convenient.
-
-- **Keeping the interface responsive and visually consistent:** Maintaining responsiveness and visual consistency across different screen sizes was also a challenge. I addressed this by testing the layout at desktop, tablet, and mobile widths, then refining spacing, grid behaviour, button placement, and section alignment so the interface stayed clean and usable. I also adjusted how floating and interactive elements behaved on smaller screens to avoid clutter or overlap. This helped keep the overall design polished and consistent across devices.
-
-## Folder Structure
-
-- `models/` — stores the MongoDB schemas for expenses and budget data
-- `public/` — contains the frontend files for the single-page interface, including HTML, CSS, JavaScript, and branding assets
-- `routes/` — contains the Express route files for budget and expense CRUD operations
-- `database-export/` — contains the exported JSON files included for assignment submission
-- `server.js` — runs the Express server and connects the frontend, routes, and database
-
-```text
-Vault/
-├── models/
-│   ├── Budget.js
-│   └── Expense.js
-├── public/
-│   ├── index.html
-│   ├── style.css
-│   ├── script.js
-│   └── logo.png
-├── routes/
-│   ├── budget.js
-│   └── expenses.js
-├── database-export/
-│   ├── budgets.json
-│   └── expenses.json
-├── server.js
-├── package.json
-├── package-lock.json
-├── .env.example
-├── .gitignore
-└── README.md
+### 1. Clone the repository
+```bash
+git clone https://github.com/samriddhisud/Vault.git
+cd Vault
 ```
 
-## Setup and Installation
-
-To run Vault locally:
-
-1. Download or clone the project folder.
-2. Open the project in VS Code or your preferred code editor.
-3. Open a terminal in the project folder.
-4. Install dependencies:
-
+### 2. Set up the backend
 ```bash
+cd backend
 npm install
 ```
 
-5. Create a `.env` file in the root folder using the provided `.env.example` file.
-6. Add your MongoDB connection string to the `.env` file:
-
-```env
-MONGODB_URI=your_mongodb_connection_string_here
+Create a `.env` file in the `backend/` folder:
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
 PORT=3000
+
+Start the backend:
+```bash
+node server.js
 ```
 
-7. Start the application:
-
+### 3. Set up the frontend
 ```bash
-npm start
-```
-
-For development with automatic restart, run:
-
-```bash
+cd ../frontend
+npm install
 npm run dev
 ```
 
-8. Open the browser and go to:
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-```text
-http://localhost:3000
-```
+---
 
-Vault will then load in the browser and connect to the MongoDB database using the environment variables provided in the `.env` file.
+## Folder structure
+Vault/
+├── backend/                  # Express.js REST API
+│   ├── middleware/
+│   │   ├── auth.js           # JWT protect + adminOnly middleware
+│   │   └── logActivity.js    # Activity logging helper
+│   ├── models/
+│   │   ├── User.js           # User schema (name, email, passwordHash, role)
+│   │   ├── Expense.js        # Expense schema (userId, title, date, category, amount)
+│   │   ├── Budget.js         # Budget schema (userId, monthlyBudget)
+│   │   └── UserActivity.js   # Activity log schema (userId, action, detail)
+│   ├── routes/
+│   │   ├── auth.js           # Register, login, logout, profile, password routes
+│   │   ├── expenses.js       # CRUD routes for expenses
+│   │   ├── budget.js         # Get and update budget
+│   │   └── admin.js          # Admin-only routes (users, activity, role management)
+│   ├── .env                  # Environment variables (not committed)
+│   ├── .env.example          # Example env file
+│   └── server.js             # Express app entry point
+│
+├── frontend/                 # React + Vite SPA
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── index.js      # Axios instance with JWT interceptor
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx    # Top navigation with dark mode toggle
+│   │   │   └── ToastContainer.jsx # Toast notification display
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx # Global auth state (user, login, logout)
+│   │   ├── hooks/
+│   │   │   └── useToast.js   # Toast notification hook
+│   │   ├── pages/
+│   │   │   ├── Login.jsx     # Login page
+│   │   │   ├── Register.jsx  # Register page
+│   │   │   ├── Dashboard.jsx # Main dashboard with hero, stats, recent expenses
+│   │   │   ├── Expenses.jsx  # Full CRUD expense management with live search
+│   │   │   ├── Reports.jsx   # Bar chart + donut chart spending visualisation
+│   │   │   ├── Admin.jsx     # Admin panel — users, activity log, expense drill-down
+│   │   │   └── Profile.jsx   # Edit profile, change password, set budget
+│   │   ├── App.jsx           # React Router setup with protected routes
+│   │   ├── index.css         # Global design system (tokens, components, utilities)
+│   │   └── main.jsx          # React entry point
+│   └── package.json
+│
+├── database-export/          # Sample database exports
+│   ├── users.json
+│   ├── expenses.json
+│   ├── budgets.json
+│   └── user_activity.json
+│
+└── README.md
 
-## Environment Variables
+---
 
-Vault uses environment variables to keep sensitive configuration details separate from the source code.
+## Key features
 
-The `.env.example` file includes the required variables:
+- **JWT Authentication** — Secure register/login with bcrypt password hashing and 7-day JWT tokens
+- **Role-based access control** — Admin and user roles, admin-only routes protected on both frontend and backend
+- **Live search** — Real-time expense filtering as you type, searches title, category, description
+- **Full CRUD** — Create, read, update, delete expenses with inline edit form and confirm-delete modal
+- **Spending trends** — Bar chart (3/6/12 month range) and donut chart (category breakdown) using Chart.js
+- **Budget tracking** — Monthly budget with progress bar, warning at 80%, danger at 100%
+- **Activity logging** — Every login, logout, and CRUD action is logged and visible in the admin panel
+- **Dark mode** — Full dark/light mode toggle persisted in localStorage
+- **CSV export** — Export filtered expenses to CSV with one click
+- **Relative timestamps** — "Today", "Yesterday", "3 days ago" on expense rows
+- **Empty states** — Friendly empty states for all pages when no data exists
+- **Toast notifications** — Non-blocking success/error feedback on every action
 
-```env
-MONGODB_URI=your_mongodb_connection_string_here
-PORT=3000
-```
+---
 
-### Variable Explanation
+## Workload allocation
 
-- `MONGODB_URI` — the MongoDB connection string used to connect the application to the database
-- `PORT` — the port number used to run the local Express server
+This was an individual submission. All files were written by Samriddhisud.
 
-## Submission Contents
-
-The final submission includes:
-
-- Full project source code
-- Frontend files in the `public/` folder
-- Backend route files in the `routes/` folder
-- MongoDB schema files in the `models/` folder
-- `server.js`
-- `package.json` and `package-lock.json`
-- `.env.example`
-- `README.md`
-- `database-export/expenses.json`
-- `database-export/budgets.json`
-
-The `database-export` folder is included to provide the exported budget and expense data used for the project submission.
-
-## Database Export Note
-
-A database export is included in the `database-export/` folder as part of the assignment submission. These JSON files contain the stored expense and budget data used for the project and help demonstrate the database structure and historical records used by the application.
-
-## Author
-
-**Samriddhi Sud**  
-Student Number: 25741149
+| Area | Files |
+|---|---|
+| Backend models | `backend/models/*.js` |
+| Backend routes | `backend/routes/*.js` |
+| Backend middleware | `backend/middleware/*.js` |
+| Frontend pages | `frontend/src/pages/*.jsx` |
+| Frontend components | `frontend/src/components/*.jsx` |
+| Auth context + hooks | `frontend/src/context/`, `frontend/src/hooks/` |
+| API layer | `frontend/src/api/index.js` |
+| Global styles | `frontend/src/index.css` |

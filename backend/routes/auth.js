@@ -76,3 +76,31 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
+router.put('/profile', require('../middleware/auth').protect, async (req, res) => {
+  const { name, email } = req.body
+  if (!name || !email) return res.status(400).json({ error: 'Name and email are required.' })
+  try {
+    const existing = await User.findOne({ email, _id: { $ne: req.user._id } })
+    if (existing) return res.status(400).json({ error: 'Email already in use.' })
+    const user = await User.findByIdAndUpdate(req.user._id, { name, email }, { new: true }).select('-passwordHash')
+    res.status(200).json(user)
+  } catch {
+    res.status(500).json({ error: 'Could not update profile.' })
+  }
+})
+
+router.put('/password', require('../middleware/auth').protect, async (req, res) => {
+  const { currentPassword, newPassword } = req.body
+  if (!currentPassword || !newPassword) return res.status(400).json({ error: 'Both passwords are required.' })
+  try {
+    const user = await User.findById(req.user._id)
+    const isMatch = await require('bcryptjs').compare(currentPassword, user.passwordHash)
+    if (!isMatch) return res.status(401).json({ error: 'Current password is incorrect.' })
+    user.passwordHash = await require('bcryptjs').hash(newPassword, 10)
+    await user.save()
+    res.status(200).json({ message: 'Password updated.' })
+  } catch {
+    res.status(500).json({ error: 'Could not update password.' })
+  }
+})

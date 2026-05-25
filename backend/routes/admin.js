@@ -85,3 +85,106 @@ router.delete('/users/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+// POST /api/admin/users - create a new user from admin panel
+router.post('/users', async (req, res) => {
+  const { name, email, password, role } = req.body
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email and password are required.' })
+  }
+  try {
+    const existing = await User.findOne({ email })
+    if (existing) return res.status(400).json({ error: 'Email already in use.' })
+    const bcrypt = require('bcryptjs')
+    const passwordHash = await bcrypt.hash(password, 10)
+    const user = await User.create({ name, email, passwordHash, role: role || 'user' })
+    res.status(201).json({ ...user.toObject(), passwordHash: undefined })
+  } catch {
+    res.status(500).json({ error: 'Could not create user.' })
+  }
+})
+
+// POST /api/admin/users - create a new user from admin panel
+router.post('/users', async (req, res) => {
+  const { name, email, password, role } = req.body
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email and password are required.' })
+  }
+  try {
+    const existing = await User.findOne({ email })
+    if (existing) return res.status(400).json({ error: 'Email already in use.' })
+    const bcrypt = require('bcryptjs')
+    const passwordHash = await bcrypt.hash(password, 10)
+    const user = await User.create({ name, email, passwordHash, role: role || 'user' })
+    res.status(201).json({ ...user.toObject(), passwordHash: undefined })
+  } catch {
+    res.status(500).json({ error: 'Could not create user.' })
+  }
+})
+
+// PUT /api/admin/users/:id - update a user's profile
+router.put('/users/:id', async (req, res) => {
+  const { name, email } = req.body
+  if (!name || !email) return res.status(400).json({ error: 'Name and email are required.' })
+  try {
+    const existing = await User.findOne({ email, _id: { $ne: req.params.id } })
+    if (existing) return res.status(400).json({ error: 'Email already in use.' })
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { name, email },
+      { new: true }
+    ).select('-passwordHash')
+    if (!user) return res.status(404).json({ error: 'User not found.' })
+    res.status(200).json(user)
+  } catch {
+    res.status(500).json({ error: 'Could not update user.' })
+  }
+})
+
+// PUT /api/admin/expenses/:id - edit any user's expense
+router.put('/expenses/:id', async (req, res) => {
+  const { title, date, category, paymentMethod, amount, description } = req.body
+  if (!title || !date || !category || amount === undefined) {
+    return res.status(400).json({ error: 'title, date, category, and amount are required.' })
+  }
+  try {
+    const expense = await require('../models/Expense').findByIdAndUpdate(
+      req.params.id,
+      { title, date, category, paymentMethod, amount, description },
+      { new: true, runValidators: true }
+    )
+    if (!expense) return res.status(404).json({ error: 'Expense not found.' })
+    res.status(200).json(expense)
+  } catch {
+    res.status(500).json({ error: 'Could not update expense.' })
+  }
+})
+
+// DELETE /api/admin/expenses/:id - delete any user's expense
+router.delete('/expenses/:id', async (req, res) => {
+  try {
+    const expense = await require('../models/Expense').findByIdAndDelete(req.params.id)
+    if (!expense) return res.status(404).json({ error: 'Expense not found.' })
+    res.status(200).json({ message: 'Expense deleted.' })
+  } catch {
+    res.status(500).json({ error: 'Could not delete expense.' })
+  }
+})
+
+// PUT /api/admin/users/:id/password - reset a user's password
+router.put('/users/:id/password', async (req, res) => {
+  const { newPassword } = req.body
+  if (!newPassword || newPassword.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters.' })
+  }
+  try {
+    const bcrypt = require('bcryptjs')
+    const user = await User.findById(req.params.id)
+    if (!user) return res.status(404).json({ error: 'User not found.' })
+    user.passwordHash = await bcrypt.hash(newPassword, 10)
+    await user.save()
+    res.status(200).json({ message: 'Password updated.' })
+  } catch {
+    res.status(500).json({ error: 'Could not update password.' })
+  }
+})

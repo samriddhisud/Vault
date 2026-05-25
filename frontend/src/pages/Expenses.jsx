@@ -236,7 +236,7 @@ export default function Expenses({ addToast }) {
           <div className="flex gap-8">
             <button className="btn btn-ghost btn-sm" onClick={exportCSV}>⬇ Export CSV</button>
             <button
-              className={`btn btn-sm ${bulkMode ? 'btn-danger' : 'btn-secondary'}`}
+              className="btn btn-sm btn-danger"
               onClick={toggleBulkMode}
             >
               {bulkMode ? '✕ Cancel' : '🗑 Delete expenses'}

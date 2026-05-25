@@ -71,7 +71,6 @@ export default function Dashboard({ addToast }) {
     categoryTotals[e.category] = (categoryTotals[e.category] || 0) + e.amount
   })
   const topCategory = Object.keys(categoryTotals).sort((a, b) => categoryTotals[b] - categoryTotals[a])[0]
-
   const recentExpenses = [...expenses].slice(0, 5)
 
   const catColorMap = {
@@ -95,7 +94,7 @@ export default function Dashboard({ addToast }) {
       )}
 
       {/* HERO */}
-      <div className="hero">
+      <div className="hero" style={{ gridTemplateColumns: '1fr' }}>
         <div>
           <div style={{ fontSize: 13, color: 'var(--mu)', marginBottom: 8 }}>{getGreeting(user.name)}</div>
           <div className="hero-h1">
@@ -117,83 +116,31 @@ export default function Dashboard({ addToast }) {
               View reports →
             </button>
           </div>
-          <div className="hero-stats">
-            <div className="hero-stat">
-              <div className="hero-stat-val">{monthExpenses.length}</div>
-              <div className="hero-stat-lbl">Transactions</div>
-            </div>
-            <div className="hero-stat">
-              <div className="hero-stat-val">{topCategory || '—'}</div>
-              <div className="hero-stat-lbl">Top category</div>
-            </div>
-            <div className="hero-stat">
-              <div className="hero-stat-val">{formatCurrency(dailyAvg)}</div>
-              <div className="hero-stat-lbl">Daily avg</div>
-            </div>
-            <div className="hero-stat">
-              <div className="hero-stat-val">{budget ? `${budgetPct}%` : '—'}</div>
-              <div className="hero-stat-lbl">Budget used</div>
-            </div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            marginTop: 32,
+            border: '2px solid var(--border)',
+            borderRadius: 12,
+            overflow: 'hidden',
+            background: 'var(--surface)',
+          }}>
+            {[
+              { val: monthExpenses.length, lbl: 'Transactions' },
+              { val: topCategory || '—', lbl: 'Top category' },
+              { val: formatCurrency(dailyAvg), lbl: 'Daily avg' },
+              { val: budget ? `${budgetPct}%` : '—', lbl: 'Budget used' },
+            ].map((s, i, arr) => (
+              <div key={i} style={{
+                padding: '13px 16px',
+                borderRight: i < arr.length - 1 ? '2px solid var(--border)' : 'none',
+              }}>
+                <div className="hero-stat-val">{s.val}</div>
+                <div className="hero-stat-lbl">{s.lbl}</div>
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Hero right cards */}
-        <div className="hero-cards">
-          <div className="card">
-            <div className="flex-between mb-8">
-              <span className="form-label">Spent this month</span>
-              <span className={`badge ${budgetStatus === 'danger' ? 'badge-red' : budgetStatus === 'warning' ? 'badge-amber' : 'badge-lime'}`}>
-                {budgetStatus === 'danger' ? 'Over budget!' : budgetStatus === 'warning' ? `${budgetPct}% used` : 'On track'}
-              </span>
-            </div>
-            <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: -1, color: 'var(--tx)' }}>
-              {formatCurrency(totalSpent)}
-            </div>
-            <div style={{ fontSize: 12, color: 'var(--mu)', marginTop: 4 }}>
-              {monthExpenses.length} transactions this month
-            </div>
-          </div>
-
-          <div className="card">
-            <div className="flex-between mb-8">
-              <span className="form-label">Monthly budget</span>
-              <span className="badge badge-violet">{budget ? formatCurrency(budget.monthlyBudget) : 'Not set'}</span>
-            </div>
-            {budget ? (
-              <>
-                <div className="progress-track mt-8">
-                  <div className={`progress-fill ${budgetStatus}`} style={{ width: `${Math.min(budgetPct, 100)}%` }} />
-                </div>
-                <div className="flex-between mt-8">
-                  <span style={{ fontSize: 12, color: 'var(--mu)' }}>{formatCurrency(totalSpent)} used</span>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--tx)' }}>{formatCurrency(Math.max(remaining, 0))} left</span>
-                </div>
-              </>
-            ) : (
-              <button className="btn btn-sm btn-secondary mt-8" onClick={() => navigate('/profile')}>
-                Set budget →
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* FEATURE STRIP */}
-      <div className="feat-strip">
-        {[
-          { icon: '📊', title: 'Spending trends', sub: 'Charts, 12-month range', to: '/reports' },
-          { icon: '🔒', title: 'Secure & private', sub: 'JWT auth, per-user data', to: null },
-          { icon: '🧮', title: 'Smart tracking', sub: 'Categories & filters', to: '/expenses' },
-          { icon: '👥', title: 'Admin dashboard', sub: 'Manage all accounts', to: user?.role === 'admin' ? '/admin' : null },
-        ].map((f, i) => (
-          <div key={i} className="feat-item" style={{ cursor: f.to ? 'pointer' : 'default' }} onClick={() => f.to && navigate(f.to)}>
-            <div className="feat-icon">{f.icon}</div>
-            <div>
-              <div className="feat-title">{f.title}</div>
-              <div className="feat-sub">{f.sub}</div>
-            </div>
-          </div>
-        ))}
       </div>
 
       {/* MAIN GRID */}
@@ -240,25 +187,50 @@ export default function Dashboard({ addToast }) {
 
         {/* SIDEBAR */}
         <div className="side-col">
+
+          {/* Monthly budget card */}
+          <div className="card">
+            <div className="flex-between mb-8">
+              <span className="form-label">Monthly budget</span>
+              <span className="badge badge-violet">{budget ? formatCurrency(budget.monthlyBudget) : 'Not set'}</span>
+            </div>
+            {budget ? (
+              <>
+                <div className="progress-track mt-8">
+                  <div className={`progress-fill ${budgetStatus}`} style={{ width: `${Math.min(budgetPct, 100)}%` }} />
+                </div>
+                <div className="flex-between mt-8">
+                  <span style={{ fontSize: 12, color: 'var(--mu)' }}>{formatCurrency(totalSpent)} used</span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--tx)' }}>{formatCurrency(Math.max(remaining, 0))} left</span>
+                </div>
+              </>
+            ) : (
+              <button className="btn btn-sm btn-secondary mt-8" onClick={() => navigate('/profile')}>
+                Set budget →
+              </button>
+            )}
+          </div>
+
+          {/* Category breakdown */}
           <div className="card-flat">
             <div className="flex-between mb-12">
-              <span style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.7 }}>By category</span>
-              <span style={{ fontSize: 11, color: 'var(--mu)' }}>This month</span>
+              <span style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.7 }}>By category</span>
+              <span style={{ fontSize: 12, color: 'var(--mu)' }}>This month</span>
             </div>
             {Object.keys(categoryTotals).length === 0 ? (
               <div style={{ fontSize: 13, color: 'var(--mu)' }}>No data yet.</div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {Object.entries(categoryTotals)
                   .sort((a, b) => b[1] - a[1])
                   .map(([cat, amt]) => (
                     <div key={cat} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <div style={{ width: 9, height: 9, borderRadius: 2, border: '1.5px solid var(--border)', background: `var(--cat-${cat.toLowerCase()})`, flexShrink: 0 }} />
-                      <span style={{ fontSize: 12, color: 'var(--mu)', flex: 1 }}>{cat}</span>
-                      <div style={{ flex: 2, height: 5, borderRadius: 999, background: 'var(--cream2)', border: '1px solid var(--border)', overflow: 'hidden' }}>
+                      <span style={{ fontSize: 13, color: 'var(--mu)', flex: 1 }}>{cat}</span>
+                      <div style={{ flex: 1, maxWidth: 80, height: 5, borderRadius: 999, background: 'var(--cream2)', border: '1px solid var(--border)', overflow: 'hidden', flexShrink: 0 }}>
                         <div style={{ height: '100%', borderRadius: 999, background: `var(--cat-${cat.toLowerCase()})`, width: `${(amt / totalSpent) * 100}%` }} />
                       </div>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--tx)', minWidth: 55, textAlign: 'right' }}>{formatCurrency(amt)}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--tx)', minWidth: 65, textAlign: 'right' }}>{formatCurrency(amt)}</span>
                     </div>
                   ))}
               </div>
@@ -268,10 +240,10 @@ export default function Dashboard({ addToast }) {
       </div>
 
       {/* BOTTOM ROW */}
-      <div className="bottom-row">
+      <div className="bottom-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
         {[
           { icon: '📈', color: 'var(--lime)', title: 'Spending trends', body: 'Bar chart and category breakdown across 3, 6 or 12 months.', label: 'View charts', to: '/reports' },
-          { icon: '👥', color: 'var(--violet)', title: 'Admin panel', body: 'View all users, their expenses, and activity logs.', label: 'Open admin', to: '/admin' },
+          { icon: '💸', color: 'var(--violet)', title: 'Track expenses', body: 'Add, edit and delete expenses. Filter by category, search and export to CSV.', label: 'Go to expenses', to: '/expenses' },
           { icon: '👤', color: 'var(--pink)', title: 'Your profile', body: 'Update your name, email, password and monthly budget.', label: 'Edit profile', to: '/profile' },
         ].map((c, i) => (
           <div key={i} className="bottom-card">

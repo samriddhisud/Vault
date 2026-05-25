@@ -284,40 +284,44 @@ export default function Admin({ addToast }) {
             </div>
           ) : (
             <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Expenses</th><th>Actions</th></tr>
-                </thead>
-                <tbody>
-                  {users.map(u => (
-                    <tr key={u._id}>
-                      <td className="td-title">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--violet)', border: '1.5px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, color: '#1a1a1a', flexShrink: 0 }}>
-                            {u.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
-                          </div>
-                          {u.name}
-                        </div>
-                      </td>
-                      <td>{u.email}</td>
-                      <td><span className={`badge ${u.role === 'admin' ? 'badge-lime' : 'badge-violet'}`}>{u.role}</span></td>
-                      <td>{formatDate(u.createdAt)}</td>
-                      <td>{u.expenseCount}</td>
-                      <td>
-                        <div className="flex gap-8">
-                          <button className="btn btn-sm btn-secondary" onClick={() => handleViewExpenses(u)}>View expenses</button>
-                          <button className="btn btn-sm btn-ghost" onClick={() => handleRoleChange(u._id, u.role === 'admin' ? 'user' : 'admin')}>
-                            {u.role === 'admin' ? 'Demote' : 'Make admin'}
-                          </button>
-                          <button className="btn-icon" onClick={() => handleEditUser(u)} title="Edit profile">✏️</button>
-                          <button className="btn-icon" onClick={() => setDeleteTarget(u)} title="Delete user">🗑️</button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Expenses</th><th>Actions</th><th></th></tr>
+    </thead>
+    <tbody>
+      {users.map(u => (
+        <tr key={u._id}>
+          <td className="td-title">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--violet)', border: '1.5px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, color: '#1a1a1a', flexShrink: 0 }}>
+                {u.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+              </div>
+              {u.name}
             </div>
+          </td>
+          <td>{u.email}</td>
+          <td><span className={`badge ${u.role === 'admin' ? 'badge-lime' : 'badge-violet'}`}>{u.role}</span></td>
+          <td>{formatDate(u.createdAt)}</td>
+          <td>{u.expenseCount}</td>
+          <td style={{ whiteSpace: 'nowrap' }}>
+            <div className="flex gap-8">
+              <button className="btn btn-sm btn-secondary" onClick={() => handleViewExpenses(u)}>View expenses</button>
+              <button className="btn btn-sm btn-ghost" onClick={() => handleRoleChange(u._id, u.role === 'admin' ? 'user' : 'admin')}>
+                {u.role === 'admin' ? 'Demote' : 'Make admin'}
+              </button>
+            </div>
+          </td>
+          <td>
+            <div className="flex gap-8">
+              <button className="btn-icon" onClick={() => handleEditUser(u)} title="Edit profile">✏️</button>
+              <button className="btn-icon" onClick={() => setDeleteTarget(u)} title="Delete user">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
           )
         )}
 

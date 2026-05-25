@@ -26,6 +26,13 @@ function AdminRoute({ children }) {
   return children
 }
 
+function UserRoute({ children }) {
+  const { user } = useAuth()
+  if (!user) return <Navigate to="/login" replace />
+  if (user.role === 'admin') return <Navigate to="/admin" replace />
+  return children
+}
+
 function AppLayout() {
   const { user } = useAuth()
   const { toasts, addToast, removeToast } = useToast()
@@ -37,19 +44,19 @@ function AppLayout() {
         <Route path="/login" element={<Login addToast={addToast} />} />
         <Route path="/register" element={<Register addToast={addToast} />} />
         <Route path="/dashboard" element={
-          <ProtectedRoute><Dashboard addToast={addToast} /></ProtectedRoute>
+          <UserRoute><Dashboard addToast={addToast} /></UserRoute>
         } />
         <Route path="/expenses" element={
-          <ProtectedRoute><Expenses addToast={addToast} /></ProtectedRoute>
+          <UserRoute><Expenses addToast={addToast} /></UserRoute>
         } />
         <Route path="/reports" element={
-          <ProtectedRoute><Reports addToast={addToast} /></ProtectedRoute>
+          <UserRoute><Reports addToast={addToast} /></UserRoute>
         } />
         <Route path="/admin" element={
           <AdminRoute><Admin addToast={addToast} /></AdminRoute>
         } />
         <Route path="/profile" element={
-          <ProtectedRoute><Profile addToast={addToast} /></ProtectedRoute>
+          <UserRoute><Profile addToast={addToast} /></UserRoute>
         } />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

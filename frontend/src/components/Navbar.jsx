@@ -23,27 +23,32 @@ export default function Navbar() {
     ? user.name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
     : '?'
 
+  const isAdmin = user?.role === 'admin'
+
   return (
     <nav className="navbar">
-      <NavLink to="/dashboard" className="navbar-brand">
+      <NavLink to={isAdmin ? '/admin' : '/dashboard'} className="navbar-brand">
         <div className="navbar-mark">🔒</div>
         <span className="navbar-name">Vault</span>
       </NavLink>
 
       <div className="navbar-links">
-        <NavLink to="/dashboard" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/expenses" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
-          Expenses
-        </NavLink>
-        <NavLink to="/reports" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
-          Reports
-        </NavLink>
-        {user?.role === 'admin' && (
+        {isAdmin ? (
           <NavLink to="/admin" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
             Admin
           </NavLink>
+        ) : (
+          <>
+            <NavLink to="/dashboard" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
+              Dashboard
+            </NavLink>
+            <NavLink to="/expenses" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
+              Expenses
+            </NavLink>
+            <NavLink to="/reports" className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}>
+              Reports
+            </NavLink>
+          </>
         )}
       </div>
 
@@ -51,9 +56,16 @@ export default function Navbar() {
         <button className="theme-btn" onClick={() => setDark(!dark)} aria-label="Toggle theme">
           {dark ? '☀️' : '🌙'}
         </button>
-        <NavLink to="/profile" className="navbar-avatar" title={user?.name}>
-          {initials}
-        </NavLink>
+        {!isAdmin && (
+          <NavLink to="/profile" className="navbar-avatar" title={user?.name}>
+            {initials}
+          </NavLink>
+        )}
+        {isAdmin && (
+          <div className="navbar-avatar" title={user?.name}>
+            {initials}
+          </div>
+        )}
         <button className="btn btn-ghost btn-sm" onClick={handleLogout}>
           Log out
         </button>

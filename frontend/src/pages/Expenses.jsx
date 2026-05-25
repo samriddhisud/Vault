@@ -40,11 +40,15 @@ export default function Expenses({ addToast }) {
   const [submitting, setSubmitting] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
+  // Bulk delete state
+  const [bulkMode, setBulkMode] = useState(false)
+  const [selected, setSelected] = useState([])
+  const [showBulkConfirm, setShowBulkConfirm] = useState(false)
+  const [bulkDeleting, setBulkDeleting] = useState(false)
+
   const today = new Date().toISOString().split('T')[0]
 
-  useEffect(() => {
-    loadExpenses()
-  }, [])
+  useEffect(() => { loadExpenses() }, [])
 
   const loadExpenses = async () => {
     try {
@@ -61,7 +65,6 @@ export default function Expenses({ addToast }) {
     let list = [...expenses]
     const now = new Date()
 
-    // Period filter
     if (filterPeriod === 'week') {
       const start = new Date(now)
       const day = start.getDay()
@@ -75,7 +78,6 @@ export default function Expenses({ addToast }) {
       })
     }
 
-    // Live search
     if (search.trim()) {
       const q = search.toLowerCase()
       list = list.filter(e =>
@@ -86,7 +88,6 @@ export default function Expenses({ addToast }) {
       )
     }
 
-    // Sort
     if (sortBy === 'newest') list.sort((a, b) => new Date(b.date) - new Date(a.date))
     else if (sortBy === 'oldest') list.sort((a, b) => new Date(a.date) - new Date(b.date))
     else if (sortBy === 'highest') list.sort((a, b) => b.amount - a.amount)
@@ -160,6 +161,42 @@ export default function Expenses({ addToast }) {
     }
   }
 
+  // Bulk delete handlers
+  const toggleBulkMode = () => {
+    setBulkMode(!bulkMode)
+    setSelected([])
+  }
+
+  const toggleSelect = (id) => {
+    setSelected(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    )
+  }
+
+  const toggleSelectAll = () => {
+    if (selected.length === filtered.length) {
+      setSelected([])
+    } else {
+      setSelected(filtered.map(e => e._id))
+    }
+  }
+
+  const handleBulkDelete = async () => {
+    setBulkDeleting(true)
+    try {
+      await Promise.all(selected.map(id => api.delete(`/expenses/${id}`)))
+      addToast(`${selected.length} expense${selected.length > 1 ? 's' : ''} deleted! ✓`, 'success')
+      setSelected([])
+      setBulkMode(false)
+      setShowBulkConfirm(false)
+      loadExpenses()
+    } catch {
+      addToast('Could not delete some expenses.', 'error')
+    } finally {
+      setBulkDeleting(false)
+    }
+  }
+
   const exportCSV = () => {
     const headers = ['Title', 'Date', 'Category', 'Description', 'Payment Method', 'Amount']
     const rows = filtered.map(e => [
@@ -181,6 +218,9 @@ export default function Expenses({ addToast }) {
     </div>
   )
 
+  const allSelected = filtered.length > 0 && selected.length === filtered.length
+  const someSelected = selected.length > 0 && !allSelected
+
   return (
     <div className="page-wrapper">
       <div className="page-content">
@@ -195,6 +235,12 @@ export default function Expenses({ addToast }) {
           </div>
           <div className="flex gap-8">
             <button className="btn btn-ghost btn-sm" onClick={exportCSV}>⬇ Export CSV</button>
+            <button
+              className={`btn btn-sm ${bulkMode ? 'btn-danger' : 'btn-secondary'}`}
+              onClick={toggleBulkMode}
+            >
+              {bulkMode ? '✕ Cancel' : '🗑 Delete expenses'}
+            </button>
             <button className="btn btn-lime" onClick={() => { setForm(empty); setEditId(null); setErrors({}); setShowForm(!showForm) }}>
               {showForm ? '✕ Close form' : '+ Add expense'}
             </button>
@@ -289,6 +335,34 @@ export default function Expenses({ addToast }) {
           </div>
         </div>
 
+        {/* BULK SELECT BAR */}
+        {bulkMode && filtered.length > 0 && (
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '10px 16px', marginBottom: 10,
+            background: 'var(--cream)', border: '2px solid var(--border)',
+            borderRadius: 10,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <input
+                type="checkbox"
+                checked={allSelected}
+                ref={el => { if (el) el.indeterminate = someSelected }}
+                onChange={toggleSelectAll}
+                style={{ width: 16, height: 16, cursor: 'pointer' }}
+              />
+              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--tx)' }}>
+                {selected.length === 0 ? 'Select all' : `${selected.length} selected`}
+              </span>
+            </div>
+            {selected.length > 0 && (
+              <button className="btn btn-danger btn-sm" onClick={() => setShowBulkConfirm(true)}>
+                🗑 Delete {selected.length} expense{selected.length > 1 ? 's' : ''}
+              </button>
+            )}
+          </div>
+        )}
+
         {/* TABLE */}
         {filtered.length === 0 ? (
           <div className="empty-state">
@@ -301,30 +375,44 @@ export default function Expenses({ addToast }) {
             <table>
               <thead>
                 <tr>
+                  {bulkMode && <th style={{ width: 40 }}></th>}
                   <th>Title</th>
                   <th>Date</th>
                   <th>Category</th>
                   <th>Payment</th>
                   <th>Description</th>
                   <th>Amount</th>
-                  <th></th>
+                  {!bulkMode && <th></th>}
                 </tr>
               </thead>
               <tbody>
                 {filtered.map(e => (
-                  <tr key={e._id}>
+                  <tr key={e._id} style={{ background: selected.includes(e._id) ? 'var(--accent2)' : '' }}
+                    onClick={() => bulkMode && toggleSelect(e._id)}>
+                    {bulkMode && (
+                      <td onClick={ev => ev.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selected.includes(e._id)}
+                          onChange={() => toggleSelect(e._id)}
+                          style={{ width: 15, height: 15, cursor: 'pointer' }}
+                        />
+                      </td>
+                    )}
                     <td className="td-title">{e.title}</td>
                     <td title={formatDate(e.date)}>{relativeDate(e.date)}</td>
                     <td><span className={`cat-pill ${catColorMap[e.category] || 'cat-other'}`}>{e.category}</span></td>
                     <td>{e.paymentMethod || '—'}</td>
                     <td style={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.description || '—'}</td>
                     <td className="td-amount">{formatCurrency(e.amount)}</td>
-                    <td>
-                      <div className="flex gap-8">
-                        <button className="btn-icon" onClick={() => handleEdit(e)} title="Edit">✏️</button>
-                        <button className="btn-icon" onClick={() => setDeleteTarget(e)} title="Delete">🗑️</button>
-                      </div>
-                    </td>
+                    {!bulkMode && (
+                      <td>
+                        <div className="flex gap-8">
+                          <button className="btn-icon" onClick={() => handleEdit(e)} title="Edit">✏️</button>
+                          <button className="btn-icon" onClick={() => setDeleteTarget(e)} title="Delete">🗑️</button>
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -333,7 +421,7 @@ export default function Expenses({ addToast }) {
         )}
       </div>
 
-      {/* DELETE MODAL */}
+      {/* SINGLE DELETE MODAL */}
       {deleteTarget && (
         <div className="modal-overlay" onClick={() => setDeleteTarget(null)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
@@ -342,6 +430,22 @@ export default function Expenses({ addToast }) {
             <div className="modal-actions">
               <button className="btn btn-ghost" onClick={() => setDeleteTarget(null)}>Cancel</button>
               <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* BULK DELETE MODAL */}
+      {showBulkConfirm && (
+        <div className="modal-overlay" onClick={() => setShowBulkConfirm(false)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <div className="modal-title">Delete {selected.length} expense{selected.length > 1 ? 's' : ''}?</div>
+            <div className="modal-body">This will permanently delete {selected.length} selected expense{selected.length > 1 ? 's' : ''}. This cannot be undone.</div>
+            <div className="modal-actions">
+              <button className="btn btn-ghost" onClick={() => setShowBulkConfirm(false)}>Cancel</button>
+              <button className="btn btn-danger" onClick={handleBulkDelete} disabled={bulkDeleting}>
+                {bulkDeleting ? 'Deleting...' : `Delete ${selected.length}`}
+              </button>
             </div>
           </div>
         </div>

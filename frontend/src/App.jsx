@@ -11,6 +11,7 @@ import Reports from './pages/Reports'
 import Admin from './pages/Admin'
 import Profile from './pages/Profile'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 import ToastContainer from './components/ToastContainer'
 import SplashScreen from './components/SplashScreen'
 
@@ -61,6 +62,7 @@ function AppLayout() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
+      {user && user.role !== 'admin' && <Footer />}
       <ToastContainer toasts={toasts} removeToast={removeToast} />
     </>
   )

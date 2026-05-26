@@ -69,8 +69,8 @@ export default function Reports({ addToast }) {
         datasets: [{
           label: 'Spending',
           data: totals,
-          backgroundColor: isDark ? 'rgba(200,255,62,0.7)' : 'rgba(26,26,26,0.8)',
-          borderColor: isDark ? '#c8ff3e' : '#1a1a1a',
+          backgroundColor: isDark ? 'rgba(200,255,62,0.7)' : 'rgba(180,157,255,0.85)',
+borderColor: isDark ? '#c8ff3e' : '#b49dff',
           borderWidth: 1.5,
           borderRadius: 6,
         }]
@@ -106,7 +106,7 @@ export default function Reports({ addToast }) {
           data: Object.values(totals),
           backgroundColor: Object.keys(totals).map(c => catColorMap[c] || '#d0d0d0'),
           borderColor: isDark ? '#1c1c1c' : '#fff',
-          borderWidth: 2,
+          borderWidth: 0,
         }]
       },
       options: {

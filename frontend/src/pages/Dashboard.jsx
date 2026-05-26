@@ -71,7 +71,7 @@ export default function Dashboard({ addToast }) {
     categoryTotals[e.category] = (categoryTotals[e.category] || 0) + e.amount
   })
   const topCategory = Object.keys(categoryTotals).sort((a, b) => categoryTotals[b] - categoryTotals[a])[0]
-  const recentExpenses = [...expenses].slice(0, 5)
+  const recentExpenses = [...expenses].slice(0, 6)
 
   const catColorMap = {
     Food: 'cat-food', Transport: 'cat-transport', Shopping: 'cat-shopping',
@@ -212,7 +212,7 @@ export default function Dashboard({ addToast }) {
           </div>
 
           {/* Category breakdown */}
-          <div className="card-flat">
+          <div className="card">
             <div className="flex-between mb-12">
               <span style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.7 }}>By category</span>
               <span style={{ fontSize: 12, color: 'var(--mu)' }}>This month</span>
@@ -224,13 +224,17 @@ export default function Dashboard({ addToast }) {
                 {Object.entries(categoryTotals)
                   .sort((a, b) => b[1] - a[1])
                   .map(([cat, amt]) => (
-                    <div key={cat} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <div style={{ width: 9, height: 9, borderRadius: 2, border: '1.5px solid var(--border)', background: `var(--cat-${cat.toLowerCase()})`, flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, color: 'var(--mu)', flex: 1 }}>{cat}</span>
-                      <div style={{ flex: 1, maxWidth: 80, height: 5, borderRadius: 999, background: 'var(--cream2)', border: '1px solid var(--border)', overflow: 'hidden', flexShrink: 0 }}>
+                    <div key={cat} style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <div style={{ width: 9, height: 9, borderRadius: 2, border: '1.5px solid var(--border)', background: `var(--cat-${cat.toLowerCase()})`, flexShrink: 0 }} />
+                          <span style={{ fontSize: 13, color: 'var(--mu)' }}>{cat}</span>
+                        </div>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--tx)' }}>{formatCurrency(amt)}</span>
+                      </div>
+                      <div style={{ height: 7, borderRadius: 999, background: 'var(--cream2)', border: '1.5px solid var(--border)', overflow: 'hidden' }}>
                         <div style={{ height: '100%', borderRadius: 999, background: `var(--cat-${cat.toLowerCase()})`, width: `${(amt / totalSpent) * 100}%` }} />
                       </div>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--tx)', minWidth: 65, textAlign: 'right' }}>{formatCurrency(amt)}</span>
                     </div>
                   ))}
               </div>

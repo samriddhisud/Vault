@@ -6,5 +6,13 @@
     "createdAt": "2026-05-22T04:08:38.280Z",
     "monthlyBudget": 2000,
     "updatedAt": "2026-05-22T04:08:38.280Z"
+  },
+  {
+    "_id": "6a0fee42eb8ee9c2def28cd4",
+    "userId": "6a0fec994ecdacc8db03c043",
+    "__v": 0,
+    "createdAt": "2026-05-22T05:48:49.850Z",
+    "monthlyBudget": 3000,
+    "updatedAt": "2026-05-25T16:43:23.185Z"
   }
 ]

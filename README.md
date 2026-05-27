@@ -261,7 +261,8 @@ Vault/
 │   ├── budgets.json
 │   └── user_activity.json
 │
-└── README.md
+├── README.md
+└── DOCUMENTATION.md        Technical and design rationale for the project
 ```
 
 ---
@@ -328,3 +329,7 @@ This was an individual submission. All files were written by Samriddhi Sud.
 ## Challenges overcome
 
 The most time-consuming aspect of the project was building a consistent, polished UI across every page. Getting layouts to align correctly - especially the dashboard stats cards, the budget progress bar, and the admin panel tables - required significant iteration to look right at different screen sizes. Dark mode proved particularly tricky: rather than simply inverting colours, every component needed its own carefully chosen dark-mode token so that contrast, readability, and visual hierarchy were preserved across both themes. Chart.js charts also required extra work to re-theme correctly in dark mode, since their default styles are hardcoded and had to be overridden at the config level. Ensuring the JWT interceptor handled token expiry gracefully without breaking the user experience across page navigations was another non-trivial backend-frontend coordination challenge. Designing the activity logging middleware was also non-trivial - rather than duplicating logging logic across every route, a reusable `logActivity` helper was created that any route could call with a user ID, action type, and detail string. This kept route files clean while ensuring every significant user action was consistently recorded in the database.
+
+## Documentation
+
+A separate `DOCUMENTATION.md` file is included in the root of the repository. It covers the technical and design rationale behind the project — why each technology was chosen, how key features were implemented, and the reasoning behind key architectural decisions.

@@ -332,4 +332,4 @@ The most time-consuming aspect of the project was building a consistent, polishe
 
 ## Documentation
 
-A separate `DOCUMENTATION.md` file is included in the root of the repository. It covers the technical and design rationale behind the project — why each technology was chosen, how key features were implemented, and the reasoning behind key architectural decisions.
+A separate `DOCUMENTATION.md` file is included in the root of the repository. It covers the technical and design rationale behind the project - why each technology was chosen, how key features were implemented, and the reasoning behind key architectural decisions.

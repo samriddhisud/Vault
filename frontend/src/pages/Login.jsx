@@ -1,15 +1,27 @@
+// Login.jsx
+// Handles user authentication. Validates the form client-side,
+// sends credentials to the backend, stores the returned JWT via AuthContext,
+// and redirects to the dashboard on success.
+
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import api from '../api/index'
 
 export default function Login({ addToast }) {
+  // login() from AuthContext stores the user object and JWT in state and localStorage
   const { login } = useAuth()
   const navigate = useNavigate()
+
+  // Form state - useState is used here because the two fields are simple
+  // and independent, with no complex state transitions needed
   const [form, setForm] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
+  // Client-side validation before sending the request.
+  // Returns an object of field-level error messages.
+  // An empty object means the form is valid.
   const validate = () => {
     const e = {}
     if (!form.email) e.email = 'Email is required.'
@@ -17,6 +29,10 @@ export default function Login({ addToast }) {
     return e
   }
 
+  // Submits the login form to the backend.
+  // On success, the backend returns the user object and JWT token.
+  // login() is called to store both in context and localStorage,
+  // then the user is redirected to the dashboard.
   const handleSubmit = async (e) => {
     e.preventDefault()
     const e2 = validate()
@@ -24,10 +40,12 @@ export default function Login({ addToast }) {
     setLoading(true)
     try {
       const res = await api.post('/auth/login', form)
+      // res.data contains { name, email, role, token }
       login(res.data)
       addToast(`Welcome back, ${res.data.name}! 👋`, 'success')
       navigate('/dashboard')
     } catch (err) {
+      // Show the backend error message if available, otherwise a generic fallback
       addToast(err.response?.data?.error || 'Login failed.', 'error')
     } finally {
       setLoading(false)
@@ -70,6 +88,7 @@ export default function Login({ addToast }) {
             {loading ? 'Logging in...' : 'Log in'}
           </button>
         </form>
+        {/* Link to register page for users without an account */}
         <div className="auth-switch">
           Don't have an account? <Link to="/register">Sign up</Link>
         </div>

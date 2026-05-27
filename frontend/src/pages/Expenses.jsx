@@ -1,22 +1,33 @@
+// Expenses.jsx
+// Manages the full expense lifecycle: create, read, update, delete.
+// Also handles live search, filtering, sorting, bulk delete, and CSV export.
+
 import { useState, useEffect, useMemo } from 'react'
 import api from '../api/index'
 
+// Static options for category and payment method dropdowns
 const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment', 'Health', 'Other']
 const PAYMENT_METHODS = ['Cash', 'Debit Card', 'Credit Card', 'Bank Transfer', 'Digital Wallet', 'Other']
 
+// Maps category names to their corresponding CSS class for coloured pills
 const catColorMap = {
   Food: 'cat-food', Transport: 'cat-transport', Shopping: 'cat-shopping',
   Bills: 'cat-bills', Entertainment: 'cat-entertainment', Health: 'cat-health', Other: 'cat-other'
 }
 
+// Formats a number as Australian currency e.g. $1,234.56
 function formatCurrency(n) {
   return '$' + Number(n).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
+// Formats a date as a readable string e.g. "25 May 2026"
 function formatDate(d) {
   return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
+// Returns a human-readable relative date for recent expenses.
+// Uses "Today" / "Yesterday" / "X days ago" for the last 7 days,
+// then falls back to the formatted date for older entries.
 function relativeDate(d) {
   const diff = Math.floor((new Date() - new Date(d)) / 86400000)
   if (diff === 0) return 'Today'
@@ -25,31 +36,44 @@ function relativeDate(d) {
   return formatDate(d)
 }
 
+// Empty form state used when opening a blank "add expense" form
 const empty = { title: '', date: '', category: '', description: '', paymentMethod: '', amount: '' }
 
 export default function Expenses({ addToast }) {
+  // Full list of expenses fetched from the API
   const [expenses, setExpenses] = useState([])
   const [loading, setLoading] = useState(true)
+
+  // Search and filter state - controls what the user sees in the table
   const [search, setSearch] = useState('')
   const [filterPeriod, setFilterPeriod] = useState('month')
   const [sortBy, setSortBy] = useState('newest')
+
+  // Form state - shared between add and edit modes
+  // useState is used here (not useReducer) because the form fields are
+  // independent of each other and don't require complex state transitions
   const [form, setForm] = useState(empty)
   const [errors, setErrors] = useState({})
-  const [editId, setEditId] = useState(null)
-  const [deleteTarget, setDeleteTarget] = useState(null)
+  const [editId, setEditId] = useState(null)       // null = add mode, string = edit mode
+  const [deleteTarget, setDeleteTarget] = useState(null) // expense object to be deleted
   const [submitting, setSubmitting] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
-  // Bulk delete state
+  // Bulk delete state - tracks which expenses are selected for deletion
   const [bulkMode, setBulkMode] = useState(false)
-  const [selected, setSelected] = useState([])
+  const [selected, setSelected] = useState([])      // array of selected expense IDs
   const [showBulkConfirm, setShowBulkConfirm] = useState(false)
   const [bulkDeleting, setBulkDeleting] = useState(false)
 
+  // Today's date in YYYY-MM-DD format, used to prevent future date selection
   const today = new Date().toISOString().split('T')[0]
 
+  // Fetch expenses once on mount.
+  // Empty dependency array ensures this only runs once, not on every render.
   useEffect(() => { loadExpenses() }, [])
 
+  // Fetches all expenses for the logged-in user from the backend.
+  // The JWT is attached automatically by the Axios interceptor in api/index.js.
   const loadExpenses = async () => {
     try {
       const res = await api.get('/expenses')
@@ -57,27 +81,39 @@ export default function Expenses({ addToast }) {
     } catch {
       addToast('Could not load expenses.', 'error')
     } finally {
+      // Always set loading to false regardless of success or failure
+      // so the UI doesn't get stuck on the loading spinner
       setLoading(false)
     }
   }
 
+  // useMemo is used here instead of a regular function because filtering and sorting
+  // the expense list is a potentially expensive operation. useMemo caches the result
+  // and only recalculates when one of its dependencies changes (expenses, search,
+  // filterPeriod, sortBy). Without useMemo, this would recompute on every render,
+  // including renders caused by unrelated state changes like typing in the form.
   const filtered = useMemo(() => {
     let list = [...expenses]
     const now = new Date()
 
+    // Filter by time period
     if (filterPeriod === 'week') {
+      // Calculate the start of the current ISO week (Monday)
       const start = new Date(now)
       const day = start.getDay()
       start.setDate(start.getDate() - (day === 0 ? 6 : day - 1))
       start.setHours(0, 0, 0, 0)
       list = list.filter(e => new Date(e.date) >= start)
     } else if (filterPeriod === 'month') {
+      // Keep only expenses from the current calendar month and year
       list = list.filter(e => {
         const d = new Date(e.date)
         return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()
       })
     }
 
+    // Live search - filters across multiple fields simultaneously.
+    // Converts both the query and field values to lowercase for case-insensitive matching.
     if (search.trim()) {
       const q = search.toLowerCase()
       list = list.filter(e =>
@@ -88,6 +124,7 @@ export default function Expenses({ addToast }) {
       )
     }
 
+    // Sort the filtered list based on user selection
     if (sortBy === 'newest') list.sort((a, b) => new Date(b.date) - new Date(a.date))
     else if (sortBy === 'oldest') list.sort((a, b) => new Date(a.date) - new Date(b.date))
     else if (sortBy === 'highest') list.sort((a, b) => b.amount - a.amount)
@@ -96,8 +133,12 @@ export default function Expenses({ addToast }) {
     return list
   }, [expenses, search, filterPeriod, sortBy])
 
+  // Total amount of all currently visible (filtered) expenses
   const totalFiltered = filtered.reduce((s, e) => s + e.amount, 0)
 
+  // Client-side form validation before submitting to the API.
+  // Returns an object of field-level error messages.
+  // An empty object means the form is valid.
   const validate = () => {
     const e = {}
     if (!form.title.trim()) e.title = 'Title is required.'
@@ -108,11 +149,14 @@ export default function Expenses({ addToast }) {
     return e
   }
 
+  // Handles both add and edit form submission.
+  // editId determines whether to POST (add) or PUT (update).
   const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
     setSubmitting(true)
+    // Ensure amount is stored as a float, not a string from the input
     const payload = { ...form, amount: parseFloat(form.amount) }
     try {
       if (editId) {
@@ -122,6 +166,7 @@ export default function Expenses({ addToast }) {
         await api.post('/expenses', payload)
         addToast('Expense added! ✓', 'success')
       }
+      // Reset form state and reload the list after a successful save
       setForm(empty)
       setEditId(null)
       setErrors({})
@@ -134,6 +179,9 @@ export default function Expenses({ addToast }) {
     }
   }
 
+  // Populates the form with an existing expense's data for editing.
+  // substring(0, 10) extracts just the YYYY-MM-DD portion of the ISO date string
+  // so it works correctly with the HTML date input.
   const handleEdit = (exp) => {
     setForm({
       title: exp.title,
@@ -146,9 +194,11 @@ export default function Expenses({ addToast }) {
     setEditId(exp._id)
     setErrors({})
     setShowForm(true)
+    // Scroll to top so the user can see the form that just opened
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // Deletes a single expense after the user confirms in the modal
   const handleDelete = async () => {
     if (!deleteTarget) return
     try {
@@ -161,18 +211,21 @@ export default function Expenses({ addToast }) {
     }
   }
 
-  // Bulk delete handlers
+  // Toggles bulk delete mode on/off and clears any selections when exiting
   const toggleBulkMode = () => {
     setBulkMode(!bulkMode)
     setSelected([])
   }
 
+  // Toggles a single expense's selection state.
+  // Uses functional update form of setState to always work with the latest state.
   const toggleSelect = (id) => {
     setSelected(prev =>
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     )
   }
 
+  // Selects all visible (filtered) expenses, or deselects all if all are already selected
   const toggleSelectAll = () => {
     if (selected.length === filtered.length) {
       setSelected([])
@@ -181,6 +234,9 @@ export default function Expenses({ addToast }) {
     }
   }
 
+  // Deletes all selected expenses in parallel using Promise.all.
+  // Using Promise.all instead of sequential awaits means all DELETE requests
+  // fire simultaneously, making bulk deletion much faster for large selections.
   const handleBulkDelete = async () => {
     setBulkDeleting(true)
     try {
@@ -197,6 +253,9 @@ export default function Expenses({ addToast }) {
     }
   }
 
+  // Exports the currently visible (filtered) expenses as a CSV file.
+  // Creates a Blob, generates a temporary object URL, triggers a download,
+  // then revokes the URL to free memory.
   const exportCSV = () => {
     const headers = ['Title', 'Date', 'Category', 'Description', 'Payment Method', 'Amount']
     const rows = filtered.map(e => [
@@ -212,12 +271,16 @@ export default function Expenses({ addToast }) {
     addToast('Exported to CSV! ✓', 'success')
   }
 
+  // Show loading spinner while expenses are being fetched
   if (loading) return (
     <div className="page-wrapper">
       <div className="loading-page"><div className="spinner"></div></div>
     </div>
   )
 
+  // Derived state for the select-all checkbox behaviour:
+  // allSelected - all visible expenses are checked (checkbox shows checked)
+  // someSelected - some but not all are checked (checkbox shows indeterminate)
   const allSelected = filtered.length > 0 && selected.length === filtered.length
   const someSelected = selected.length > 0 && !allSelected
 
@@ -247,7 +310,7 @@ export default function Expenses({ addToast }) {
           </div>
         </div>
 
-        {/* ADD / EDIT FORM */}
+        {/* ADD / EDIT FORM - conditionally rendered based on showForm state */}
         {showForm && (
           <div className="card mb-16">
             <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16 }}>
@@ -307,12 +370,12 @@ export default function Expenses({ addToast }) {
           </div>
         )}
 
-        {/* TOOLBAR */}
+        {/* TOOLBAR - search, filter period, and sort controls */}
         <div className="toolbar">
           <div className="search-input">
             <span>🔍</span>
             <input
-              placeholder="Search title, category, description…"
+              placeholder="Search title, category, description..."
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -335,7 +398,7 @@ export default function Expenses({ addToast }) {
           </div>
         </div>
 
-        {/* BULK SELECT BAR */}
+        {/* BULK SELECT BAR - only visible when bulk mode is active */}
         {bulkMode && filtered.length > 0 && (
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -344,6 +407,8 @@ export default function Expenses({ addToast }) {
             borderRadius: 10,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              {/* ref callback sets indeterminate state on the checkbox DOM element.
+                  indeterminate cannot be set via a React prop, so a ref is used instead. */}
               <input
                 type="checkbox"
                 checked={allSelected}
@@ -363,7 +428,7 @@ export default function Expenses({ addToast }) {
           </div>
         )}
 
-        {/* TABLE */}
+        {/* TABLE - shows empty state if no results, otherwise renders the expense rows */}
         {filtered.length === 0 ? (
           <div className="empty-state">
             <div className="empty-state-icon">{search ? '🔍' : '💸'}</div>
@@ -390,6 +455,8 @@ export default function Expenses({ addToast }) {
                   <tr key={e._id} style={{ background: selected.includes(e._id) ? 'var(--accent2)' : '' }}
                     onClick={() => bulkMode && toggleSelect(e._id)}>
                     {bulkMode && (
+                      // stopPropagation prevents the row click handler from also firing
+                      // when the user clicks directly on the checkbox
                       <td onClick={ev => ev.stopPropagation()}>
                         <input
                           type="checkbox"
@@ -400,10 +467,11 @@ export default function Expenses({ addToast }) {
                       </td>
                     )}
                     <td className="td-title">{e.title}</td>
+                    {/* title attribute shows the full formatted date on hover */}
                     <td title={formatDate(e.date)}>{relativeDate(e.date)}</td>
                     <td><span className={`cat-pill ${catColorMap[e.category] || 'cat-other'}`}>{e.category}</span></td>
-                    <td>{e.paymentMethod || '—'}</td>
-                    <td style={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.description || '—'}</td>
+                    <td>{e.paymentMethod || '-'}</td>
+                    <td style={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.description || '-'}</td>
                     <td className="td-amount">{formatCurrency(e.amount)}</td>
                     {!bulkMode && (
                       <td>
@@ -421,7 +489,7 @@ export default function Expenses({ addToast }) {
         )}
       </div>
 
-      {/* SINGLE DELETE MODAL */}
+      {/* SINGLE DELETE MODAL - clicking the overlay dismisses it */}
       {deleteTarget && (
         <div className="modal-overlay" onClick={() => setDeleteTarget(null)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
@@ -435,7 +503,7 @@ export default function Expenses({ addToast }) {
         </div>
       )}
 
-      {/* BULK DELETE MODAL */}
+      {/* BULK DELETE MODAL - confirms deletion of all selected expenses */}
       {showBulkConfirm && (
         <div className="modal-overlay" onClick={() => setShowBulkConfirm(false)}>
           <div className="modal" onClick={e => e.stopPropagation()}>

@@ -1,11 +1,21 @@
+// Footer.jsx
+// Site-wide footer shown on all user pages (not admin).
+// Contains the brand, navigation links, newsletter signup, and contact form.
+// Newsletter and contact form use local state only - no backend integration needed
+// since this is a student project demo.
+
 import { useState } from 'react'
 
 export default function Footer() {
+  // Newsletter signup state - subscribed switches the form to a success message
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+
+  // Contact form state - sent switches the form to a success message
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
 
+  // Handles newsletter signup - validates email then shows success state
   const handleSubscribe = (e) => {
     e.preventDefault()
     if (!email) return
@@ -13,6 +23,7 @@ export default function Footer() {
     setEmail('')
   }
 
+  // Handles contact form submission - validates all fields then shows success state
   const handleContact = (e) => {
     e.preventDefault()
     if (!contactForm.name || !contactForm.email || !contactForm.message) return
@@ -24,14 +35,14 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-top">
 
-        {/* Brand */}
+        {/* Brand column - logo, tagline, social links */}
         <div className="footer-brand">
           <div className="footer-logo">
             <div className="navbar-mark" style={{ width: 32, height: 32, fontSize: 16 }}>🔒</div>
             <span style={{ fontSize: 18, fontWeight: 800, color: 'var(--tx)' }}>Vault</span>
           </div>
           <p style={{ fontSize: 13, color: 'var(--mu)', lineHeight: 1.7, marginTop: 10, maxWidth: 220 }}>
-            Track your spending, set budgets, and take control of your finances — all in one place.
+            Track your spending, set budgets, and take control of your finances - all in one place.
           </p>
           <div className="footer-socials">
             <a href="https://github.com" target="_blank" rel="noreferrer" className="social-btn" title="GitHub">
@@ -46,7 +57,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Links */}
+        {/* Product navigation links */}
         <div className="footer-links-col">
           <div className="footer-heading">Product</div>
           <a href="/dashboard" className="footer-link">Dashboard</a>
@@ -55,6 +66,7 @@ export default function Footer() {
           <a href="/profile" className="footer-link">Profile</a>
         </div>
 
+        {/* Support links */}
         <div className="footer-links-col">
           <div className="footer-heading">Support</div>
           <a href="#" className="footer-link">FAQ</a>
@@ -63,7 +75,7 @@ export default function Footer() {
           <a href="#" className="footer-link">Contact us</a>
         </div>
 
-        {/* Newsletter */}
+        {/* Newsletter signup - shows success message after submission */}
         <div className="footer-newsletter">
           <div className="footer-heading">Stay updated</div>
           <p style={{ fontSize: 12, color: 'var(--mu)', marginBottom: 12, lineHeight: 1.6 }}>
@@ -71,7 +83,7 @@ export default function Footer() {
           </p>
           {subscribed ? (
             <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--lime)', background: '#1a1a1a', padding: '10px 14px', borderRadius: 8, border: '2px solid var(--border)' }}>
-              ✓ You're subscribed!
+              You're subscribed!
             </div>
           ) : (
             <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -88,12 +100,12 @@ export default function Footer() {
           )}
         </div>
 
-        {/* Contact */}
+        {/* Contact form - shows success message after submission */}
         <div className="footer-contact">
           <div className="footer-heading">Contact us</div>
           {sent ? (
             <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--lime)', background: '#1a1a1a', padding: '10px 14px', borderRadius: 8, border: '2px solid var(--border)' }}>
-              ✓ Message sent! We'll get back to you.
+              Message sent! We'll get back to you.
             </div>
           ) : (
             <form onSubmit={handleContact} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -126,7 +138,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
+      {/* Copyright bar */}
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} Vault. All rights reserved.</span>
         <span style={{ color: 'var(--mu)', fontSize: 12 }}>Built with ❤️ for better finances.</span>
